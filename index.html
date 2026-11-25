@@ -534,9 +534,54 @@ button { font-family: inherit; }
 @keyframes spin-star { from { transform: rotate(-90deg) scale(0.6); } to { transform: none; } }
 .idea.enter { animation: in-card 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
 
+/* ---------- Living motion ---------- */
+@keyframes glow {
+  0%, 100% { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 0 0 0 rgba(186, 208, 255, 0); }
+  50%      { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95), 0 0 34px 4px rgba(186, 208, 255, 0.42); }
+}
+.hero-actions .btn-gen.is-in { animation: glow 2.6s ease-in-out infinite; }
+.hero-actions .btn-gen.is-in:hover { animation: none; }
+.hero-actions .btn-gen.is-in.spin svg { animation: spin-star 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+
+@keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+.hero h1 em {
+  padding-right: 0.06em;
+  background: linear-gradient(100deg, #8a8a8a 20%, #ffffff 50%, #8a8a8a 80%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: in-em 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.72s both, shimmer 4s linear 2s infinite;
+}
+
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+.phone { animation: float 4s ease-in-out infinite; }
+@keyframes wv { from { transform: scaleY(0.35); } to { transform: scaleY(1); } }
+.phone .wv { transform-box: fill-box; transform-origin: center; animation: wv 0.6s ease-in-out infinite alternate; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+.phone .bl { animation: blink 1.4s ease-in-out infinite; }
+@keyframes hand { to { transform: rotate(360deg); } }
+.phone .hand { transform-origin: 45px 66px; animation: hand 2.4s linear infinite; }
+@keyframes pulse-dot { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.5); } }
+.phone .pd { transform-box: fill-box; transform-origin: center; animation: pulse-dot 1.2s ease-in-out infinite; }
+
+.idea { transition: border-color 0.35s ease, box-shadow 0.35s ease, transform 0.35s ease; }
+.idea:hover {
+  border-color: rgba(220, 230, 255, 0.6);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(170, 200, 255, 0.12);
+}
+.idea.rolling .idea-value { filter: blur(1.2px); opacity: 0.55; transition: none; }
+.idea.rolling { border-color: rgba(242, 107, 29, 0.6); }
+.idea.flip .idea-row { animation: row-flash 0.8s ease both; }
+@keyframes row-flash { from { background: rgba(255, 255, 255, 0.07); } to { background: transparent; } }
+
+.saved li { animation: in-value 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.niche { transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.2s ease; }
+.niche:hover { transform: translateY(-2px); }
+
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { transition: none !important; animation: none !important; }
-  .appear, .hero-photo, .hero h1 em, .badge-star { opacity: 1; transform: none; clip-path: none; filter: none; }
+  .phone, .phone *, .hero-actions .btn-gen.is-in { animation: none !important; }
+  .hero h1 em { animation: none !important; color: #9a9a9a; background: none; }
 }
 
 /* ---------- Responsive ---------- */
@@ -662,7 +707,7 @@ button { font-family: inherit; }
 
       <p class="lede appear appear--soft" style="--d:0.82s">Тема, хук и формат видео. Полезно для твоего Instagram и TikTok.</p>
 
-      <div class="niches appear appear--soft" id="niches" role="group" aria-label="Ниша" style="--d:0.9s"></div>
+      <div class="niches" id="niches" role="group" aria-label="Ниша"></div>
 
       <div class="hero-actions">
         <button class="btn btn-solid btn-gen appear appear--btn" id="gen" type="button" style="--d:0.96s">
@@ -978,7 +1023,7 @@ button { font-family: inherit; }
       '<path d="M' + (x - 20 * s) + ' ' + (y + 38 * s) + 'Q' + (x - 20 * s) + ' ' + (y + 13 * s) + ' ' + x + ' ' + (y + 13 * s) +
       'Q' + (x + 20 * s) + ' ' + (y + 13 * s) + ' ' + (x + 20 * s) + ' ' + (y + 38 * s) + 'Z" fill="' + c + '"/>';
   }
-  function bar(x, y, w, h, c, r) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + (h || 5) + '" rx="' + (r == null ? 2.5 : r) + '" fill="' + (c || W) + '"/>'; }
+  function bar(x, y, w, h, c, r) { return '<rect' + (c === A ? ' class="bl"' : '') + ' x="' + x + '" y="' + y + '" width="' + w + '" height="' + (h || 5) + '" rx="' + (r == null ? 2.5 : r) + '" fill="' + (c || W) + '"/>'; }
   function txt(x, y, s, size, c, anchor) {
     return '<text x="' + x + '" y="' + y + '" font-family="Inter,system-ui,sans-serif" font-weight="700" font-size="' + size + '" fill="' + (c || W) + '" text-anchor="' + (anchor || 'middle') + '">' + s + '</text>';
   }
@@ -992,13 +1037,13 @@ button { font-family: inherit; }
     broll: function () { var s = '<rect width="90" height="160" fill="#141414"/>'; [0, 1, 2].forEach(function (i) { var y = 18 + i * 36; s += '<rect x="14" y="' + y + '" width="62" height="30" rx="3" fill="' + ['#3a3a3a', '#4b4b4b', '#2f2f2f'][i] + '"/><path d="M' + (20 + i * 8) + ' ' + (y + 26) + 'l10 -12l8 8l6 -6l10 10z" fill="#777"/>'; }); return s + wave(140); },
     dialog: function () { return '<rect width="90" height="160" fill="#161616"/>' + person(24, 74, 0.8, '#d9d9d9') + person(66, 74, 0.8, A) + '<rect x="12" y="30" width="30" height="16" rx="6" fill="' + W + '"/><rect x="48" y="40" width="30" height="16" rx="6" fill="#555"/>'; },
     green: function () { return '<rect width="90" height="160" fill="#1f3b26"/><rect x="10" y="14" width="70" height="74" rx="4" fill="#e9e9e9"/>' + bar(16, 22, 46, 5, '#999') + bar(16, 32, 56, 4, '#bbb') + bar(16, 40, 50, 4, '#bbb') + bar(16, 48, 54, 4, '#bbb') + '<rect x="16" y="58" width="58" height="22" rx="3" fill="#c9c9c9"/>' + person(45, 108, 0.95); },
-    timelapse: function () { return '<rect width="90" height="160" fill="#161616"/><circle cx="45" cy="66" r="24" fill="none" stroke="' + W + '" stroke-width="2.5"/><path d="M45 66V50M45 66l11 7" stroke="' + A + '" stroke-width="2.5" stroke-linecap="round"/>' + bar(14, 118, 62, 4, '#444') + bar(14, 118, 40, 4, A) + txt(45, 140, 'x10', 10, '#aaa'); },
+    timelapse: function () { return '<rect width="90" height="160" fill="#161616"/><circle cx="45" cy="66" r="24" fill="none" stroke="' + W + '" stroke-width="2.5"/><path class="hand" d="M45 66V50M45 66l11 7" stroke="' + A + '" stroke-width="2.5" stroke-linecap="round"/>' + bar(14, 118, 62, 4, '#444') + bar(14, 118, 40, 4, A) + txt(45, 140, 'x10', 10, '#aaa'); },
     comment: function () { return '<rect width="90" height="160" fill="#161616"/>' + person(45, 86, 1.15) + '<rect x="10" y="16" width="70" height="30" rx="8" fill="' + W + '"/><circle cx="20" cy="31" r="5" fill="' + A + '"/>' + bar(29, 24, 42, 4, '#555') + bar(29, 33, 32, 4, '#999'); },
     cuts: function () { return '<rect width="90" height="160" fill="#141414"/><g transform="rotate(-8 45 80)"><rect x="16" y="36" width="58" height="84" rx="5" fill="#3a3a3a"/></g><g transform="rotate(5 45 80)"><rect x="16" y="36" width="58" height="84" rx="5" fill="#555"/></g><rect x="16" y="36" width="58" height="84" rx="5" fill="#777"/>' + person(45, 66, 0.85, W) + txt(76, 30, '⚡', 12, A); },
-    story: function () { var s = '<rect width="90" height="160" fill="#161616"/>' + person(45, 54, 1.15) + '<line x1="14" y1="130" x2="76" y2="130" stroke="#555" stroke-width="2"/>'; [14, 35, 55, 76].forEach(function (x, i) { s += '<circle cx="' + x + '" cy="130" r="4" fill="' + (i < 2 ? A : '#777') + '"/>'; }); return s + bar(20, 106, 50, 6); },
+    story: function () { var s = '<rect width="90" height="160" fill="#161616"/>' + person(45, 54, 1.15) + '<line x1="14" y1="130" x2="76" y2="130" stroke="#555" stroke-width="2"/>'; [14, 35, 55, 76].forEach(function (x, i) { s += '<circle' + (i === 1 ? ' class="pd"' : '') + ' cx="' + x + '" cy="130" r="4" fill="' + (i < 2 ? A : '#777') + '"/>'; }); return s + bar(20, 106, 50, 6); },
     carousel: function () { var s = '<rect width="90" height="160" fill="#161616"/><rect x="12" y="24" width="66" height="92" rx="6" fill="#2b2b2b"/>' + txt(45, 62, '1/5', 14) + bar(22, 74, 46, 5, G) + bar(28, 84, 34, 5, G); [33, 39, 45, 51, 57].forEach(function (x, i) { s += '<circle cx="' + x + '" cy="132" r="2.4" fill="' + (i === 0 ? W : '#555') + '"/>'; }); return s; }
   };
-  function wave(y) { var s = ''; for (var i = 0; i < 14; i++) { var h = 3 + Math.abs(Math.sin(i * 1.7)) * 9; s += '<rect x="' + (17 + i * 4.2) + '" y="' + (y - h / 2) + '" width="2.2" height="' + h + '" rx="1.1" fill="' + (i < 6 ? A : '#888') + '"/>'; } return s; }
+  function wave(y) { var s = ''; for (var i = 0; i < 14; i++) { var h = 3 + Math.abs(Math.sin(i * 1.7)) * 9; s += '<rect class="wv" style="animation-delay:' + (-(i * 0.13).toFixed(2)) + 's" x="' + (17 + i * 4.2) + '" y="' + (y - h / 2) + '" width="2.2" height="' + h + '" rx="1.1" fill="' + (i < 6 ? A : '#888') + '"/>'; } return s; }
   function picture(id) { return '<svg viewBox="0 0 90 160" xmlns="http://www.w3.org/2000/svg">' + PICS[id]() + '</svg>'; }
 
   // ---------- Build pools ----------
@@ -1019,10 +1064,11 @@ button { font-family: inherit; }
   $('stat-ideas').textContent = ALL.length + ' идей в ' + (NICHES.length - 1) + ' нишах';
 
   var current = 'all';
-  NICHES.forEach(function (n) {
+  NICHES.forEach(function (n, i) {
     var b = document.createElement('button');
     b.type = 'button';
-    b.className = 'niche';
+    b.className = 'niche appear appear--pop';
+    b.style.setProperty('--d', (0.86 + i * 0.06).toFixed(2) + 's');
     b.setAttribute('aria-pressed', n.id === current ? 'true' : 'false');
     b.dataset.id = n.id;
     b.innerHTML = '<span class="emo" aria-hidden="true">' + n.emo + '</span>' + n.name;
@@ -1055,7 +1101,37 @@ button { font-family: inherit; }
   function pickIdx(len, last) { var i; do { i = Math.floor(Math.random() * len); } while (i === last && len > 1); return i; }
   function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
 
+  var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var rolling = false;
+
+  // Slot-machine roll through random ideas before landing on the real one.
   function generate() {
+    if (rolling) return;
+    restart(gen, 'spin');
+    if (reduceMotion) { settle(); return; }
+    rolling = true;
+    if (card.hidden) { card.hidden = false; restart(card, 'enter'); }
+    card.classList.remove('flip');
+    card.classList.add('rolling');
+    var ticks = 0;
+    var timer = setInterval(function () {
+      var r = ALL[Math.floor(Math.random() * ALL.length)];
+      var f = FORMATS[Math.floor(Math.random() * FORMATS.length)];
+      elTopic.textContent = r.t;
+      elHook.textContent = r.h;
+      elFormat.textContent = f[0];
+      elCta.textContent = CTAS[Math.floor(Math.random() * CTAS.length)];
+      elPic.innerHTML = picture(f[1]);
+      if (++ticks >= 9) {
+        clearInterval(timer);
+        card.classList.remove('rolling');
+        rolling = false;
+        settle();
+      }
+    }, 65);
+  }
+
+  function settle() {
     var base = draw();
     lastFormat = pickIdx(FORMATS.length, lastFormat);
     lastCta = pickIdx(CTAS.length, lastCta);
@@ -1073,7 +1149,6 @@ button { font-family: inherit; }
     elCount.textContent = 'Идея №' + shown;
     if (card.hidden) { card.hidden = false; restart(card, 'enter'); }
     restart(card, 'flip');
-    restart(gen, 'spin');
     genLabel.textContent = 'Ещё идею';
   }
   function render() {
