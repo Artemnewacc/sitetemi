@@ -5,7 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#000000">
-<meta name="description" content="Генератор идей для рилсов: нажми и получи тему, хук и формат видео для Instagram и TikTok.">
+<meta name="description" content="Генератор идей для рилсов: выбери нишу, нажми и получи тему, хук, формат, призыв и хэштеги для Instagram, TikTok и Shorts.">
+<meta property="og:title" content="Генератор идей для рилсов">
+<meta property="og:description" content="Нажми и получи тему, хук и формат видео. Полезно для твоего Instagram и TikTok.">
+<meta property="og:type" content="website">
 <title>Генератор идей для рилсов</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cg transform='rotate(-30 12 12)'%3E%3Ccircle cx='7.3' cy='3.2' r='1.45'/%3E%3Crect x='5.5' y='4.7' width='3.6' height='14.6' rx='1.8'/%3E%3Crect x='14.9' y='4.7' width='3.6' height='14.6' rx='1.8'/%3E%3Ccircle cx='16.7' cy='20.8' r='1.45'/%3E%3C/g%3E%3C/svg%3E">
 <style>
@@ -19,15 +22,15 @@ html, body { background: #000000 !important; color: #ffffff; }
   --bg: #000000;
   --text: #ffffff;
   --muted: #9a9a9a;
-  --stat: #d8d8d8;
   --border: rgba(255, 255, 255, 0.16);
   --border-soft: rgba(255, 255, 255, 0.12);
+  --accent: #f26b1d;
 
   --logo: 15.5px;
   --logo-mark: 22px;
   --btn: 13.5px;
   --btn-h: 40px;
-  --hero-btn-h: 46px;
+  --hero-btn-h: 48px;
   --h1: 48px;
   --lede: 15.5px;
   --badge: 12.5px;
@@ -37,9 +40,9 @@ html, body { background: #000000 !important; color: #ffffff; }
   --stats-x: 72px;
   --stats-y: 36px;
   --hero-gap: 48px;
-  --copy-max: 860px;
-  --lede-max: 470px;
-  --card-max: 620px;
+  --copy-max: 900px;
+  --lede-max: 500px;
+  --card-max: 760px;
 
   --sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --serif: "Instrument Serif", "Times New Roman", Times, serif;
@@ -119,14 +122,10 @@ button { font-family: inherit; }
   font-size: var(--logo);
   font-weight: 600;
   letter-spacing: -0.03em;
-  color: #fff;
 }
 .logo svg { width: var(--logo-mark); height: var(--logo-mark); flex: none; }
 .logo-suffix { font-weight: 400; color: #cfcfcf; }
-.header-tags {
-  display: flex;
-  gap: 8px;
-}
+.header-tags { display: flex; gap: 8px; }
 .tag {
   display: inline-flex;
   align-items: center;
@@ -159,7 +158,7 @@ button { font-family: inherit; }
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
-  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, color 0.35s ease, filter 0.35s ease, transform 0.15s ease;
+  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, color 0.35s ease, transform 0.15s ease;
 }
 .btn:active { transform: scale(0.97); }
 .btn::after {
@@ -185,7 +184,6 @@ button { font-family: inherit; }
   border-color: #f2f6ff;
   box-shadow: inset 0 1px 0 #fff, 0 0 26px rgba(186, 208, 255, 0.4), 0 8px 18px rgba(255, 255, 255, 0.14);
 }
-
 .btn-ghost {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(0, 0, 0, 0.5) 46%, rgba(150, 170, 200, 0.1));
   color: #fff;
@@ -199,8 +197,9 @@ button { font-family: inherit; }
   border-color: rgba(220, 230, 255, 0.8);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 0 24px rgba(170, 200, 255, 0.28);
 }
+.btn-ghost.is-on { border-color: rgba(242, 107, 29, 0.85); color: #ffb48a; }
 
-.btn-gen { height: var(--hero-btn-h); padding: 0 24px; font-size: calc(var(--btn) + 1px); }
+.btn-gen { height: var(--hero-btn-h); padding: 0 26px; font-size: calc(var(--btn) + 1.5px); }
 .btn-gen svg { width: 16px; height: 18px; flex: none; }
 .btn-gen.spin svg { animation: spin-star 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
 
@@ -209,7 +208,7 @@ button { font-family: inherit; }
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 24px var(--hero-gap);
+  padding: 16px 24px var(--hero-gap);
   min-height: 0;
 }
 .hero-copy {
@@ -222,12 +221,11 @@ button { font-family: inherit; }
   max-width: var(--copy-max);
   width: 100%;
 }
-
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
   padding: 9px 15px;
   border-radius: 5px;
   background: linear-gradient(90deg, #7d7d7d 0%, #2a2a2a 52%, #0a0a0a 100%);
@@ -242,7 +240,6 @@ button { font-family: inherit; }
   filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.45));
   animation: in-star 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.28s both;
 }
-
 .hero h1 {
   display: flex;
   flex-direction: column;
@@ -252,11 +249,7 @@ button { font-family: inherit; }
   letter-spacing: -0.045em;
   line-height: 1.12;
 }
-.headline-line {
-  display: block;
-  overflow: hidden;
-  padding: 0.06em 0.15em 0.14em;
-}
+.headline-line { display: block; overflow: hidden; padding: 0.06em 0.15em 0.14em; }
 .headline-line > span { display: block; }
 .hero h1 em {
   font-family: var(--serif);
@@ -268,21 +261,51 @@ button { font-family: inherit; }
   display: inline-block;
   animation: in-em 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.72s both;
 }
-
 .lede {
   max-width: var(--lede-max);
-  margin-top: 16px;
+  margin-top: 14px;
   color: #9a9a9a;
   font-size: var(--lede);
   line-height: 1.55;
   letter-spacing: -0.015em;
 }
 
-.hero-actions {
+/* ---------- Niches ---------- */
+.niches {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: 8px;
   margin-top: 24px;
+  max-width: 820px;
 }
+.niche {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(198, 198, 198, 0.35);
+  background: rgba(12, 12, 12, 0.6);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  color: #e6e6e6;
+  font-size: 13.5px;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.15s ease;
+}
+.niche:hover { border-color: rgba(235, 235, 235, 0.8); background: rgba(40, 40, 40, 0.7); }
+.niche:active { transform: scale(0.96); }
+.niche .emo { font-size: 15px; line-height: 1; }
+.niche[aria-pressed="true"] {
+  background: linear-gradient(180deg, #ffffff 0%, #e7e7e7 48%, #cfcfcf 100%);
+  border-color: #fff;
+  color: #111;
+  font-weight: 500;
+}
+.hero-actions { display: flex; justify-content: center; margin-top: 20px; }
 
 /* ---------- Idea card ---------- */
 .idea {
@@ -290,32 +313,64 @@ button { font-family: inherit; }
   max-width: var(--card-max);
   margin-top: 22px;
   text-align: left;
-  border-radius: 12px;
+  border-radius: 14px;
   border: 1px solid rgba(198, 198, 198, 0.35);
-  background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0.62) 45%, rgba(150, 170, 200, 0.08));
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.09), rgba(0, 0, 0, 0.66) 45%, rgba(150, 170, 200, 0.08));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 20px 50px rgba(0, 0, 0, 0.45);
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
   overflow: hidden;
 }
 .idea[hidden] { display: none; }
+.idea-body { display: grid; grid-template-columns: 150px 1fr; }
+.idea-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 0 18px 18px;
+}
+.phone {
+  width: 112px;
+  aspect-ratio: 9 / 16;
+  border-radius: 16px;
+  border: 1.5px solid rgba(220, 220, 220, 0.55);
+  background: #0b0b0b;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 0 3px #000;
+  overflow: hidden;
+  position: relative;
+}
+.phone svg { width: 100%; height: 100%; display: block; }
+.phone-cap { font-size: 11.5px; color: #8a8a8a; text-align: center; letter-spacing: -0.01em; }
+.idea-niche {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-soft);
+  font-size: 12px;
+  color: #dcdcdc;
+}
+.idea-rows { min-width: 0; }
 .idea-row {
   display: grid;
-  grid-template-columns: 92px 1fr;
-  gap: 16px;
+  grid-template-columns: 86px 1fr;
+  gap: 14px;
   align-items: baseline;
-  padding: 16px 20px;
+  padding: 14px 20px;
   border-bottom: 1px solid var(--border-soft);
 }
 .idea-label {
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #8a8a8a;
 }
 .idea-value {
-  font-size: 15.5px;
+  font-size: 15px;
   line-height: 1.45;
   letter-spacing: -0.015em;
   color: #f4f4f4;
@@ -328,19 +383,79 @@ button { font-family: inherit; }
   letter-spacing: -0.01em;
   color: #fff;
 }
+.idea-row--tags .idea-value { color: #9fb6ff; font-size: 14px; word-spacing: 4px; }
 .idea-foot {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   padding: 12px 20px;
+  border-top: 1px solid var(--border-soft);
 }
 .idea-count { font-size: 12.5px; color: #7a7a7a; letter-spacing: -0.01em; }
-.idea-foot .btn { height: 34px; padding: 0 14px; font-size: 13px; }
+.idea-tools { display: flex; gap: 8px; }
+.idea-tools .btn { height: 34px; padding: 0 14px; font-size: 13px; }
 
-.idea.flip .idea-value { animation: in-value 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
-.idea.flip .idea-row:nth-child(2) .idea-value { animation-delay: 0.07s; }
-.idea.flip .idea-row:nth-child(3) .idea-value { animation-delay: 0.14s; }
+.idea.flip .idea-value, .idea.flip .phone svg { animation: in-value 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.idea.flip .idea-row:nth-child(2) .idea-value { animation-delay: 0.05s; }
+.idea.flip .idea-row:nth-child(3) .idea-value { animation-delay: 0.1s; }
+.idea.flip .idea-row:nth-child(4) .idea-value { animation-delay: 0.15s; }
+.idea.flip .idea-row:nth-child(5) .idea-value { animation-delay: 0.2s; }
+
+/* ---------- Saved ---------- */
+.saved {
+  width: 100%;
+  max-width: var(--card-max);
+  margin-top: 16px;
+  text-align: left;
+}
+.saved[hidden] { display: none; }
+.saved summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+  background: rgba(10, 10, 10, 0.6);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  font-size: 14px;
+  color: #e6e6e6;
+}
+.saved summary::-webkit-details-marker { display: none; }
+.saved summary .chev { transition: transform 0.25s ease; color: #888; }
+.saved[open] summary .chev { transform: rotate(180deg); }
+.saved ul { list-style: none; display: grid; gap: 8px; margin-top: 8px; }
+.saved li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: start;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+  background: rgba(10, 10, 10, 0.6);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.saved-topic { font-size: 14px; color: #f2f2f2; letter-spacing: -0.01em; }
+.saved-hook { font-family: var(--serif); font-style: italic; font-size: 16px; color: #bdbdbd; margin-top: 2px; }
+.saved-meta { font-size: 12px; color: #7a7a7a; margin-top: 4px; }
+.saved-del {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--border-soft);
+  background: transparent;
+  color: #9a9a9a;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+}
+.saved-del:hover { color: #fff; border-color: rgba(255, 255, 255, 0.4); }
 
 /* ---------- Footer ---------- */
 .stats {
@@ -361,6 +476,24 @@ button { font-family: inherit; }
   white-space: nowrap;
 }
 .stat-icon { width: 20px; height: 20px; flex: none; }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 90;
+  transform: translate(-50%, 20px);
+  opacity: 0;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #f2f2f2;
+  color: #111;
+  font-size: 13.5px;
+  font-weight: 500;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 /* ---------- Entrance motion ---------- */
 .appear {
@@ -409,38 +542,34 @@ button { font-family: inherit; }
 /* ---------- Responsive ---------- */
 @media (min-width: 1600px) {
   :root {
-    --logo: 17px; --logo-mark: 24px; --btn: 15px; --btn-h: 44px; --hero-btn-h: 52px;
+    --logo: 17px; --logo-mark: 24px; --btn: 15px; --btn-h: 44px; --hero-btn-h: 54px;
     --h1: 64px; --lede: 18px; --badge: 13.5px; --stat-size: 15px;
     --header-y: 28px; --header-x: 64px; --stats-x: 96px; --stats-y: 44px;
-    --copy-max: 980px; --lede-max: 540px; --card-max: 700px;
+    --copy-max: 1000px; --lede-max: 560px; --card-max: 840px;
   }
-  .idea-value { font-size: 17px; }
+  .niche { height: 40px; font-size: 14.5px; }
+  .idea-value { font-size: 16.5px; }
   .idea-row--hook .idea-value { font-size: 24px; }
-  .stat-icon { width: 22px; height: 22px; }
 }
 @media (min-width: 1920px) {
-  :root { --h1: 76px; --lede: 20px; --header-x: 80px; --stats-x: 120px; --card-max: 780px; --copy-max: 1120px; --lede-max: 620px; }
+  :root { --h1: 76px; --lede: 20px; --header-x: 80px; --stats-x: 120px; --card-max: 920px; --copy-max: 1120px; --lede-max: 620px; }
 }
 @media (min-width: 901px) and (max-width: 1279px) {
   :root { --h1: 42px; --lede: 15px; --header-x: 28px; --stats-x: 36px; --stats-y: 28px; }
 }
 @media (min-width: 901px) and (max-height: 850px) {
-  :root { --header-y: 14px; --stats-y: 22px; --hero-gap: 24px; --h1: 40px; }
+  :root { --header-y: 14px; --stats-y: 22px; --hero-gap: 28px; --h1: 40px; }
   .badge { margin-bottom: 12px; }
-  .lede { margin-top: 10px; }
+  .niches { margin-top: 18px; }
   .hero-actions { margin-top: 16px; }
   .idea { margin-top: 16px; }
-  .idea-row { padding: 12px 20px; }
-}
-@media (min-width: 901px) and (max-height: 720px) {
-  :root { --h1: 34px; --lede: 14px; }
-  .idea-row--hook .idea-value { font-size: 19px; }
+  .idea-row { padding: 11px 20px; }
 }
 
 /* Phone */
 @media (max-width: 900px) {
   :root {
-    --logo: 16px; --btn: 15px; --btn-h: 46px; --hero-btn-h: 52px;
+    --logo: 16px; --btn: 15px; --btn-h: 46px; --hero-btn-h: 54px;
     --h1: 36px; --lede: 16.5px; --badge: 13.5px; --stat-size: 15px;
     --header-y: 16px; --header-x: 18px; --stats-x: 20px; --stats-y: 28px;
     --hero-gap: 36px; --copy-max: 100%; --lede-max: 100%; --card-max: 100%;
@@ -453,15 +582,34 @@ button { font-family: inherit; }
       max(var(--header-x), env(safe-area-inset-left));
   }
   .header-tags { display: none; }
-  .hero { padding: 28px 18px 40px; }
-  .idea-row { grid-template-columns: 1fr; gap: 6px; padding: 14px 16px; }
-  .idea-foot { padding: 12px 16px; }
+  .hero { padding: 24px 16px 40px; }
+  .niches {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    width: calc(100% + 32px);
+    margin-left: -16px;
+    margin-right: -16px;
+    padding: 2px 16px 6px;
+    scrollbar-width: none;
+  }
+  .niches::-webkit-scrollbar { display: none; }
+  .niche { flex: none; }
+  .idea-body { grid-template-columns: 1fr; }
+  .idea-visual { flex-direction: row; justify-content: flex-start; padding: 16px 16px 4px; gap: 14px; align-items: center; }
+  .phone { width: 84px; border-radius: 12px; }
+  .phone-meta { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+  .phone-cap { text-align: left; }
+  .idea-row { grid-template-columns: 1fr; gap: 5px; padding: 12px 16px; }
+  .idea-foot { padding: 12px 16px; flex-wrap: wrap; }
   .stats { flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
   .stat { white-space: normal; }
 }
 @media (max-width: 560px) {
   :root { --h1: 32px; --lede: 16px; --header-x: 16px; }
   .hero-actions, .btn-gen { width: 100%; }
+  .idea-foot { flex-direction: column; align-items: stretch; }
+  .idea-tools .btn { flex: 1; height: 40px; }
 }
 </style>
 </head>
@@ -514,6 +662,8 @@ button { font-family: inherit; }
 
       <p class="lede appear appear--soft" style="--d:0.82s">Тема, хук и формат видео. Полезно для твоего Instagram и TikTok.</p>
 
+      <div class="niches appear appear--soft" id="niches" role="group" aria-label="Ниша" style="--d:0.9s"></div>
+
       <div class="hero-actions">
         <button class="btn btn-solid btn-gen appear appear--btn" id="gen" type="button" style="--d:0.96s">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -524,23 +674,50 @@ button { font-family: inherit; }
       </div>
 
       <section class="idea" id="idea" hidden aria-live="polite">
-        <div class="idea-row">
-          <span class="idea-label">Тема</span>
-          <span class="idea-value" id="idea-topic"></span>
-        </div>
-        <div class="idea-row idea-row--hook">
-          <span class="idea-label">Хук</span>
-          <span class="idea-value" id="idea-hook"></span>
-        </div>
-        <div class="idea-row">
-          <span class="idea-label">Формат</span>
-          <span class="idea-value" id="idea-format"></span>
+        <div class="idea-body">
+          <div class="idea-visual">
+            <div class="phone" id="idea-pic" aria-hidden="true"></div>
+            <div class="phone-meta">
+              <span class="idea-niche" id="idea-niche"></span>
+              <span class="phone-cap">Как выглядит кадр</span>
+            </div>
+          </div>
+          <div class="idea-rows">
+            <div class="idea-row">
+              <span class="idea-label">Тема</span>
+              <span class="idea-value" id="idea-topic"></span>
+            </div>
+            <div class="idea-row idea-row--hook">
+              <span class="idea-label">Хук</span>
+              <span class="idea-value" id="idea-hook"></span>
+            </div>
+            <div class="idea-row">
+              <span class="idea-label">Формат</span>
+              <span class="idea-value" id="idea-format"></span>
+            </div>
+            <div class="idea-row">
+              <span class="idea-label">Призыв</span>
+              <span class="idea-value" id="idea-cta"></span>
+            </div>
+            <div class="idea-row idea-row--tags">
+              <span class="idea-label">Хэштеги</span>
+              <span class="idea-value" id="idea-tags"></span>
+            </div>
+          </div>
         </div>
         <div class="idea-foot">
           <span class="idea-count" id="idea-count"></span>
-          <button class="btn btn-ghost" id="copy" type="button">Скопировать</button>
+          <div class="idea-tools">
+            <button class="btn btn-ghost" id="save" type="button">☆ Сохранить</button>
+            <button class="btn btn-ghost" id="copy" type="button">Скопировать</button>
+          </div>
         </div>
       </section>
+
+      <details class="saved" id="saved" hidden>
+        <summary><span id="saved-title">Сохранённые идеи</span><span class="chev">▾</span></summary>
+        <ul id="saved-list"></ul>
+      </details>
     </div>
   </main>
 
@@ -561,9 +738,8 @@ button { font-family: inherit; }
         <rect x="13.4" y="2.6" width="7.2" height="18.8" rx="3.6" fill="url(#pill-b)"/>
         <rect x="9.2" y="10.9" width="5.6" height="2.2" rx="1.1" fill="#4a4a4a"/>
       </svg>
-      <span id="stat-ideas">Темы для любой ниши</span>
+      <span id="stat-ideas">Идеи для любой ниши</span>
     </div>
-
     <div class="stat appear appear--stat" style="--d:1.28s">
       <svg class="stat-icon" viewBox="0 0 24 24" aria-hidden="true">
         <rect x="2.4" y="2.4" width="19.2" height="19.2" rx="6.2" fill="#ffffff"/>
@@ -574,7 +750,6 @@ button { font-family: inherit; }
       </svg>
       <span>Хук, который держит первые 3 секунды</span>
     </div>
-
     <div class="stat appear appear--stat" style="--d:1.44s">
       <svg class="stat-icon" viewBox="0 0 24 24" aria-hidden="true">
         <rect x="6" y="2.4" width="12" height="19.2" rx="3" fill="none" stroke="#e8e8e8" stroke-width="1.6"/>
@@ -585,148 +760,402 @@ button { font-family: inherit; }
   </footer>
 </div>
 
+<div class="toast" id="toast" role="status"></div>
+
 <script>
 (function () {
-  // ---------- Ideas ----------
-  var IDEAS = [
-    ["3 ошибки, которые делают новички в твоей нише", "«Если ты делаешь это, ты теряешь клиентов каждый день»"],
-    ["Один твой рабочий день за 30 секунд", "«Вот как на самом деле выглядит мой рабочий день»"],
-    ["Миф и правда о твоей профессии", "«Все в это верят. Но это неправда»"],
-    ["Приложение или инструмент, который экономит тебе час в день", "«Жаль, что я не нашёл это год назад»"],
-    ["Твой результат: что было месяц назад и что сейчас", "«Месяц назад у меня было вот так…»"],
-    ["Ответ на самый частый вопрос подписчиков", "«Мне задают этот вопрос каждый день. Отвечаю раз и навсегда»"],
-    ["Совет себе годичной давности", "«Если бы я мог вернуться на год назад, я бы сказал себе одно»"],
-    ["Самая дорогая ошибка в твоём деле", "«Эта ошибка обошлась мне очень дорого»"],
-    ["Лайфхак, который занимает 10 секунд", "«Сохрани, пока не забыл»"],
-    ["Непопулярное мнение о твоей нише", "«Сейчас меня будут хейтить, но…»"],
-    ["Разбор вирусного видео: почему оно залетело", "«Почему это видео набрало миллион? Разбираю за 30 секунд»"],
-    ["Закулисье: как создаётся твой продукт или услуга", "«Вы никогда не видели, как это делается»"],
-    ["Чек-лист из 5 пунктов перед стартом", "«Не начинай, пока не проверишь эти 5 пунктов»"],
-    ["Твоё мнение о новом тренде в нише", "«Все сейчас это делают. А стоит ли?»"],
-    ["Ответ на хейтерский комментарий", "«Мне написали это в комментариях. Отвечаю»"],
-    ["Дешёвый и дорогой вариант: есть ли разница", "«Дешёвое против дорогого. Угадаешь, где что?»"],
-    ["Первый шаг для полного новичка", "«Хочешь начать, но не знаешь с чего? Вот первый шаг»"],
-    ["Твоя утренняя рутина", "«Мои первые 30 минут после пробуждения»"],
-    ["Реальные цифры: сколько потратил и сколько получил", "«Показываю цифры, которые обычно скрывают»"],
-    ["Привычка, от которой ты отказался", "«Я перестал это делать, и всё изменилось»"],
-    ["Челлендж на 7 дней и его итог", "«Я делал это 7 дней подряд. Вот что произошло»"],
-    ["Топ-3 книги, курса или сервиса для твоей ниши", "«Три вещи, которые реально изменили мой подход»"],
-    ["Как сделать что-то полезное за 60 секунд", "«Засекай минуту»"],
-    ["Признание: в чём ты был не прав", "«Я долго вам это советовал. Я ошибался»"],
-    ["Ожидание и реальность в твоей профессии", "«Как я думал, будет. И как оказалось»"],
-    ["Секрет, о котором молчат профессионалы", "«Профи не любят об этом говорить»"],
-    ["История провала и что он тебе дал", "«Это был мой худший день в работе»"],
-    ["Сколько на самом деле стоит то, чем ты занимаешься", "«Сколько это стоит на самом деле? Считаю честно»"],
-    ["Пошаговый мини-туториал", "«Повтори за мной. Всего 3 шага»"],
-    ["Как всё начиналось: твоя история", "«Всё началось с одного сообщения»"],
-    ["Типы клиентов или людей в твоей нише", "«Узнай себя: какой ты тип?»"],
-    ["Что лежит у тебя на рабочем столе или в сумке", "«Без этих вещей я не начинаю работу»"],
-    ["Худший совет, который ты слышал в своей нише", "«Худший совет, который мне давали. Не повторяйте»"],
-    ["Опрос аудитории одним словом", "«Ответь в комментариях одним словом»"],
-    ["Популярный совет, который на самом деле вредит", "«Этот совет набрал миллионы просмотров. И он вредный»"],
-    ["Как перестать переплачивать в твоей нише", "«Перестань переплачивать за это»"],
-    ["Быстрый обзор новинки", "«Вышло на этой неделе. Стоит ли брать?»"],
-    ["Распаковка или первое впечатление", "«Открываем вместе. Я сам ещё не видел»"],
-    ["Публичная цель на месяц", "«Записываю это, чтобы не слиться»"],
-    ["Сравнение: как делают все и как делаешь ты", "«Все делают так. А я делаю вот так»"],
-    ["Вопрос, который тебе стыдно было задать в начале", "«Я стеснялся спросить это, когда начинал»"],
-    ["3 признака, что пора что-то менять", "«Если узнал себя хотя бы в одном пункте, досмотри»"],
-    ["Реакция на старое своё видео", "«Смотрю своё первое видео. Это больно»"],
-    ["Одна вещь, которая дала тебе больше всего результата", "«80% результата мне дала одна вещь»"],
-    ["Что бы ты сделал, если бы начинал с нуля сегодня", "«Если бы я начинал с нуля сегодня, я бы сделал так»"]
+  // ---------- Data ----------
+  var NICHES = [
+    { id: 'all', emo: '✨', name: 'Любая' },
+    { id: 'beauty', emo: '💄', name: 'Бьюти', tags: '#бьюти #уходзакожей #макияж #beauty #skincare' },
+    { id: 'fit', emo: '💪', name: 'Фитнес', tags: '#фитнес #тренировка #зож #fitness #workout' },
+    { id: 'food', emo: '🍳', name: 'Еда', tags: '#рецепты #едадома #вкусно #food #recipe' },
+    { id: 'biz', emo: '💼', name: 'Бизнес', tags: '#бизнес #предприниматель #продажи #business #маркетинг' },
+    { id: 'blog', emo: '📱', name: 'Блогинг', tags: '#блогинг #продвижение #рилс #контент #reels' },
+    { id: 'psy', emo: '🧠', name: 'Психология', tags: '#психология #саморазвитие #отношения #mentalhealth #осознанность' },
+    { id: 'travel', emo: '✈️', name: 'Путешествия', tags: '#путешествия #travel #отпуск #куда_поехать #trip' },
+    { id: 'fashion', emo: '👗', name: 'Мода', tags: '#мода #стиль #образ #fashion #outfit' },
+    { id: 'edu', emo: '📚', name: 'Обучение', tags: '#обучение #учёба #английский #образование #study' },
+    { id: 'home', emo: '🏠', name: 'Недвижимость', tags: '#недвижимость #ремонт #квартира #интерьер #дизайнинтерьера' }
   ];
+  var GENERIC_TAGS = '#reels #рилс #идеидляконтента #tiktok #контент';
+
+  var IDEAS = {
+    general: [
+      ["3 ошибки, которые делают новички в твоей нише", "«Если ты делаешь это, ты теряешь клиентов каждый день»"],
+      ["Один твой рабочий день за 30 секунд", "«Вот как на самом деле выглядит мой рабочий день»"],
+      ["Миф и правда о твоей профессии", "«Все в это верят. Но это неправда»"],
+      ["Приложение или инструмент, который экономит тебе час в день", "«Жаль, что я не нашёл это год назад»"],
+      ["Твой результат: что было месяц назад и что сейчас", "«Месяц назад у меня было вот так…»"],
+      ["Ответ на самый частый вопрос подписчиков", "«Мне задают этот вопрос каждый день. Отвечаю раз и навсегда»"],
+      ["Совет себе годичной давности", "«Если бы я мог вернуться на год назад, я бы сказал себе одно»"],
+      ["Самая дорогая ошибка в твоём деле", "«Эта ошибка обошлась мне очень дорого»"],
+      ["Лайфхак, который занимает 10 секунд", "«Сохрани, пока не забыл»"],
+      ["Непопулярное мнение о твоей нише", "«Сейчас меня будут хейтить, но…»"],
+      ["Разбор вирусного видео: почему оно залетело", "«Почему это видео набрало миллион? Разбираю за 30 секунд»"],
+      ["Закулисье: как создаётся твой продукт или услуга", "«Вы никогда не видели, как это делается»"],
+      ["Чек-лист из 5 пунктов перед стартом", "«Не начинай, пока не проверишь эти 5 пунктов»"],
+      ["Твоё мнение о новом тренде в нише", "«Все сейчас это делают. А стоит ли?»"],
+      ["Ответ на хейтерский комментарий", "«Мне написали это в комментариях. Отвечаю»"],
+      ["Дешёвый и дорогой вариант: есть ли разница", "«Дешёвое против дорогого. Угадаешь, где что?»"],
+      ["Первый шаг для полного новичка", "«Хочешь начать, но не знаешь с чего? Вот первый шаг»"],
+      ["Твоя утренняя рутина", "«Мои первые 30 минут после пробуждения»"],
+      ["Реальные цифры: сколько потратил и сколько получил", "«Показываю цифры, которые обычно скрывают»"],
+      ["Привычка, от которой ты отказался", "«Я перестал это делать, и всё изменилось»"],
+      ["Челлендж на 7 дней и его итог", "«Я делал это 7 дней подряд. Вот что произошло»"],
+      ["Топ-3 книги, курса или сервиса для твоей ниши", "«Три вещи, которые реально изменили мой подход»"],
+      ["Как сделать что-то полезное за 60 секунд", "«Засекай минуту»"],
+      ["Признание: в чём ты был не прав", "«Я долго вам это советовал. Я ошибался»"],
+      ["Ожидание и реальность в твоей профессии", "«Как я думал, будет. И как оказалось»"],
+      ["Секрет, о котором молчат профессионалы", "«Профи не любят об этом говорить»"],
+      ["История провала и что он тебе дал", "«Это был мой худший день в работе»"],
+      ["Пошаговый мини-туториал", "«Повтори за мной. Всего 3 шага»"],
+      ["Как всё начиналось: твоя история", "«Всё началось с одного сообщения»"],
+      ["Типы клиентов или людей в твоей нише", "«Узнай себя: какой ты тип?»"],
+      ["Худший совет, который ты слышал в своей нише", "«Худший совет, который мне давали. Не повторяйте»"],
+      ["Популярный совет, который на самом деле вредит", "«Этот совет набрал миллионы просмотров. И он вредный»"],
+      ["Публичная цель на месяц", "«Записываю это, чтобы не слиться»"],
+      ["Реакция на своё старое видео", "«Смотрю своё первое видео. Это больно»"],
+      ["Одна вещь, которая дала тебе больше всего результата", "«80% результата мне дала одна вещь»"],
+      ["Что бы ты сделал, если бы начинал с нуля сегодня", "«Если бы я начинал с нуля сегодня, я бы сделал так»"]
+    ],
+    beauty: [
+      ["3 средства, которые зря покупают все", "«Не покупай это, пока не посмотришь»"],
+      ["Макияж за 5 минут на каждый день", "«Пять минут, и ты готова»"],
+      ["Бюджетный аналог люксового средства", "«Тот же эффект в 5 раз дешевле»"],
+      ["Ошибки в уходе за кожей", "«Ты умываешься неправильно. Почти все так делают»"],
+      ["Одно средство две недели: результат", "«Две недели с одним средством. Смотри разницу»"],
+      ["Что лежит в твоей косметичке", "«Всё, чем я реально пользуюсь каждый день»"],
+      ["Разбор состава популярного крема", "«Читаем состав вместе. Ты удивишься»"],
+      ["Проверка вирусного бьюти-лайфхака", "«Проверяю лайфхак из TikTok на себе»"],
+      ["Укладка без фена и утюжка", "«Без фена и утюжка. Смотри до конца»"],
+      ["Что на самом деле бесит мастеров", "«Мастера никогда не скажут вам это в лицо»"]
+    ],
+    fit: [
+      ["Упражнение, которое почти все делают неправильно", "«90% людей делают это упражнение неправильно»"],
+      ["Тренировка дома за 10 минут без инвентаря", "«Ни зала, ни гантелей. Только 10 минут»"],
+      ["Что я ем за день", "«Всё, что я съел за день, без фильтров»"],
+      ["Миф о похудении", "«Нет, от этого живот не уйдёт»"],
+      ["Трансформация за 3 месяца", "«Три месяца назад я не мог подтянуться ни разу»"],
+      ["Ошибки новичка в зале", "«Я так делал первые полгода. Не повторяй»"],
+      ["Разминка для тех, кто сидит весь день", "«Сидишь больше 6 часов в день? Сделай это»"],
+      ["Сладкий перекус до 200 ккал", "«Сладкое, но без вреда для фигуры»"],
+      ["Сколько шагов в день нужно на самом деле", "«10 000 шагов — это миф? Разбираюсь»"],
+      ["Как тренироваться, когда совсем нет сил", "«Нет сил на тренировку? Посмотри это»"]
+    ],
+    food: [
+      ["Блюдо за 15 минут из 3 ингредиентов", "«Три продукта и 15 минут»"],
+      ["Завтрак, который готовится с вечера", "«Проснулся, а завтрак уже готов»"],
+      ["Ресторанное блюдо в домашней версии", "«В ресторане это стоит 900 ₽. Дома выходит 150»"],
+      ["Ошибка, которая портит блюдо", "«Вот почему у тебя это не получается»"],
+      ["Еда на всю неделю за один час", "«Готовлю один раз, ем всю неделю»"],
+      ["Проверка вирусного рецепта", "«У этого рецепта 10 миллионов просмотров. Проверяю»"],
+      ["Полезная версия фастфуда", "«Бургер, после которого не стыдно»"],
+      ["Кухонный лайфхак", "«Я 10 лет резал это неправильно»"],
+      ["Ужин из остатков в холодильнике", "«В холодильнике пусто? Смотри, что получится»"],
+      ["Слепая дегустация: дешёвое против дорогого", "«Угадаю ли я дорогой продукт вслепую?»"]
+    ],
+    biz: [
+      ["Как ты нашёл первых клиентов", "«Первых 10 клиентов я нашёл вот так»"],
+      ["Ошибка, которая чуть не закрыла бизнес", "«Из-за этого я чуть всё не закрыл»"],
+      ["Реальная выручка за месяц", "«Показываю реальную выручку за месяц»"],
+      ["Сервисы, на которых держится бизнес", "«Пять сервисов, без которых я бы утонул»"],
+      ["Как поднять цену и не потерять клиентов", "«Я поднял цену в 2 раза. Вот что случилось»"],
+      ["День предпринимателя без прикрас", "«Никакого ноутбука на пляже. Вот реальность»"],
+      ["Разбор чужой рекламы", "«Эта реклама сливает бюджет. Объясняю почему»"],
+      ["Фраза, которая закрывает продажу", "«Одна фраза, после которой клиенты соглашаются»"],
+      ["Бизнес с минимальным стартом", "«Можно начать с 10 000 ₽. Вот как»"],
+      ["Куда вложить первые 100 000 ₽", "«Если бы у меня было 100 тысяч на старт»"]
+    ],
+    blog: [
+      ["Как ты набрал первую 1000 подписчиков", "«Первая тысяча самая сложная. Вот что сработало»"],
+      ["Почему у видео мало просмотров", "«Меньше 500 просмотров? Проблема вот тут»"],
+      ["На что ты снимаешь рилсы", "«Вся моя техника: телефон и вот это»"],
+      ["Как алгоритм выбирает, кому показать видео", "«Алгоритм покажет твоё видео, только если…»"],
+      ["Сколько платят за рекламу блогеру", "«Сколько платят за рекламу при 10 тысячах подписчиков»"],
+      ["Что снять, если нет идей", "«Не знаешь, что снять сегодня? Держи»"],
+      ["Закулисье съёмки одного рилса", "«Это видео — 40 дублей. Показываю»"],
+      ["Ошибки в шапке профиля", "«Твоя шапка профиля отпугивает людей»"],
+      ["Монтаж рилса за 5 минут в CapCut", "«Монтирую рилс за 5 минут. Повторяй»"],
+      ["Первое видео против последнего", "«Мой первый рилс и сегодняшний. Почувствуй разницу»"]
+    ],
+    psy: [
+      ["Признаки выгорания", "«Узнал себя в 3 пунктах из 5? У тебя выгорание»"],
+      ["Фраза, которая ранит в отношениях", "«Никогда не говори это близкому человеку»"],
+      ["Почему мы откладываем дела", "«Прокрастинация — это не лень. Вот что это»"],
+      ["Упражнение от тревоги за минуту", "«Тревожно? Сделай это прямо сейчас»"],
+      ["Типы привязанности", "«Узнай свой тип за 30 секунд»"],
+      ["Как научиться говорить «нет»", "«Почему тебе так сложно отказывать»"],
+      ["Незаметная привычка, которая делает несчастным", "«Ты делаешь это каждый день и не замечаешь»"],
+      ["Миф о самооценке", "«Высокая самооценка — это не то, что ты думаешь»"],
+      ["Что реакция на критику говорит о тебе", "«Как ты реагируешь на критику, так ты и живёшь»"],
+      ["Вопросы себе перед важным решением", "«Задай себе эти 3 вопроса, прежде чем решать»"]
+    ],
+    travel: [
+      ["Место, до которого не доходят туристы", "«Туристы сюда не доходят. И зря»"],
+      ["Сколько стоит неделя в поездке", "«Неделя в этой стране: считаю всё до рубля»"],
+      ["Ошибки в первой поездке", "«Не делай этого в аэропорту»"],
+      ["Что взять в ручную кладь", "«Всё, что нужно, в одном рюкзаке»"],
+      ["Популярное место на фото и в жизни", "«На фото и в жизни. Почувствуй разницу»"],
+      ["Как найти дешёвые билеты", "«Я купил билеты в 2 раза дешевле. Вот как»"],
+      ["Местная еда, которую нужно попробовать", "«Если ты здесь, обязательно попробуй это»"],
+      ["Маршрут по городу на 3 дня", "«3 дня в этом городе. Сохрани маршрут»"],
+      ["Что не говорят при бронировании отеля", "«Отели не говорят об этом при бронировании»"],
+      ["Путешествие с минимальным бюджетом", "«Путешествую на 2000 ₽ в день. Показываю»"]
+    ],
+    fashion: [
+      ["5 образов из 10 вещей", "«10 вещей, 5 образов, вся неделя»"],
+      ["Деталь, которая удешевляет образ", "«Это сразу удешевляет любой образ»"],
+      ["Как выглядеть дорого за небольшие деньги", "«Выглядеть дорого дешевле, чем кажется»"],
+      ["Тренд сезона: носить или нет", "«Все это носят. А тебе точно нужно?»"],
+      ["Базовый гардероб", "«Без этих вещей гардероб не работает»"],
+      ["Цвета, которые всегда сочетаются", "«Эти цвета вместе работают всегда»"],
+      ["Примерка заказа с маркетплейса", "«Заказала с маркетплейса. Ожидание и реальность»"],
+      ["Как понять свой размер", "«Ты покупаешь не свой размер. Проверь»"],
+      ["Одна вещь в трёх стилях", "«Одна куртка, три совершенно разных образа»"],
+      ["Улучшаю образ подписчика", "«Вы прислали образ, я его улучшаю»"]
+    ],
+    edu: [
+      ["Способ быстро запомнить что угодно", "«Этот способ работает с первого раза»"],
+      ["Фраза на английском, которую все говорят неправильно", "«Ты говоришь это неправильно. Почти все так делают»"],
+      ["Учёба по 20 минут в день", "«20 минут в день, и через месяц ты себя не узнаешь»"],
+      ["Факт, которого не рассказывают в школе", "«Этого вам точно не рассказывали в школе»"],
+      ["Техника Помодоро на практике", "«25 минут, которые изменили мою учёбу»"],
+      ["Бесплатные ресурсы для обучения", "«Эти сайты бесплатные. И они лучше платных курсов»"],
+      ["Как подготовиться к экзамену за неделю", "«Осталась неделя? Ещё не поздно»"],
+      ["Почему годами учат язык и не говорят", "«Почему ты учишь язык годами и всё ещё молчишь»"],
+      ["Сложная тема простыми словами", "«Объясню за 30 секунд, как пятилетнему»"],
+      ["Тест для зрителей", "«Только 10% ответят правильно»"]
+    ],
+    home: [
+      ["Ошибки при покупке квартиры", "«Не подписывай договор, пока не проверишь это»"],
+      ["На чём нельзя экономить в ремонте", "«Сэкономишь здесь, переделаешь через год»"],
+      ["Квартира до и после ремонта", "«Было и стало. Смотри до конца»"],
+      ["Как снять квартиру и не попасть на мошенников", "«Если арендодатель просит это, уходи»"],
+      ["Сколько на самом деле стоит ремонт", "«Сколько стоит ремонт однушки. Честный расчёт»"],
+      ["Хитрости для маленькой кухни", "«Маленькая кухня? Вот как выиграть место»"],
+      ["Ипотека простыми словами", "«Ипотека за 40 секунд без сложных слов»"],
+      ["Румтур по квартире", "«Показываю квартиру, в которой хочется жить»"],
+      ["Вопросы застройщику до покупки", "«Задай эти вопросы застройщику до покупки»"],
+      ["Как сдать квартиру дороже", "«Одна деталь, и квартира сдаётся дороже»"]
+    ]
+  };
+
+  // Formats: [text, picture id]
   var FORMATS = [
-    "Говорящая голова, 15–25 сек, крупные субтитры",
-    "Текст на экране + трендовый звук, 7–10 сек",
-    "POV-сценка, 10–15 сек",
-    "До / после с резкой склейкой на бит",
-    "Список из 3 пунктов, цифры на экране, 20–30 сек",
-    "Запись экрана телефона + голос за кадром",
-    "Голос за кадром + нарезка B-roll, 20 сек",
-    "Диалог с самим собой: два образа, 15–20 сек",
-    "Зелёный экран: ты на фоне скриншота или видео",
-    "Таймлапс процесса + подписи",
-    "Ответ на комментарий: стикер комментария сверху",
-    "Быстрые склейки каждые 1–2 сек, 15–20 сек",
-    "Сторителлинг в один дубль, 30–45 сек",
-    "Карусель в видео: 5 кадров с текстом по 2 сек"
+    ["Говорящая голова, 15–25 сек, крупные субтитры", 'head'],
+    ["Текст на экране + трендовый звук, 7–10 сек", 'text'],
+    ["POV-сценка, 10–15 сек", 'pov'],
+    ["До / после с резкой склейкой на бит", 'split'],
+    ["Список из 3 пунктов, цифры на экране, 20–30 сек", 'list'],
+    ["Запись экрана телефона + голос за кадром", 'screen'],
+    ["Голос за кадром + нарезка B-roll, 20 сек", 'broll'],
+    ["Диалог с самим собой: два образа, 15–20 сек", 'dialog'],
+    ["Зелёный экран: ты на фоне скриншота или видео", 'green'],
+    ["Таймлапс процесса + подписи", 'timelapse'],
+    ["Ответ на комментарий: стикер комментария сверху", 'comment'],
+    ["Быстрые склейки каждые 1–2 сек, 15–20 сек", 'cuts'],
+    ["Сторителлинг в один дубль, 30–45 сек", 'story'],
+    ["Карусель в видео: 5 кадров с текстом по 2 сек", 'carousel']
   ];
 
-  var gen = document.getElementById('gen');
-  var genLabel = document.getElementById('gen-label');
-  var card = document.getElementById('idea');
-  var elTopic = document.getElementById('idea-topic');
-  var elHook = document.getElementById('idea-hook');
-  var elFormat = document.getElementById('idea-format');
-  var elCount = document.getElementById('idea-count');
-  var copyBtn = document.getElementById('copy');
+  var CTAS = [
+    "«Сохрани, чтобы не потерять»",
+    "«Отправь другу, которому это нужно»",
+    "«Напиши в комментариях „хочу“, пришлю подробности»",
+    "«Подпишись, завтра будет вторая часть»",
+    "«Какой пункт про тебя? Пиши номер в комментариях»",
+    "«Поставь ❤️, если узнал себя»",
+    "«Согласен или нет? Пиши в комментариях»",
+    "«Попробуй и отметь меня в сторис»"
+  ];
 
-  document.getElementById('stat-ideas').textContent = IDEAS.length + ' тем для любой ниши';
+  // ---------- Pictures (9:16 frame mockups) ----------
+  var W = '#f2f2f2', G = '#5a5a5a', D = '#2a2a2a', A = '#f26b1d';
+  function person(x, y, s, c) {
+    c = c || '#d9d9d9';
+    return '<circle cx="' + x + '" cy="' + y + '" r="' + (9 * s) + '" fill="' + c + '"/>' +
+      '<path d="M' + (x - 20 * s) + ' ' + (y + 38 * s) + 'Q' + (x - 20 * s) + ' ' + (y + 13 * s) + ' ' + x + ' ' + (y + 13 * s) +
+      'Q' + (x + 20 * s) + ' ' + (y + 13 * s) + ' ' + (x + 20 * s) + ' ' + (y + 38 * s) + 'Z" fill="' + c + '"/>';
+  }
+  function bar(x, y, w, h, c, r) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + (h || 5) + '" rx="' + (r == null ? 2.5 : r) + '" fill="' + (c || W) + '"/>'; }
+  function txt(x, y, s, size, c, anchor) {
+    return '<text x="' + x + '" y="' + y + '" font-family="Inter,system-ui,sans-serif" font-weight="700" font-size="' + size + '" fill="' + (c || W) + '" text-anchor="' + (anchor || 'middle') + '">' + s + '</text>';
+  }
+  var PICS = {
+    head: function () { return '<rect width="90" height="160" fill="#161616"/>' + person(45, 62, 1.3) + '<rect y="110" width="90" height="50" fill="#161616"/>' + bar(14, 118, 62, 7, W) + bar(22, 129, 46, 7, A); },
+    text: function () { return '<rect width="90" height="160" fill="#1c1c1c"/>' + bar(14, 58, 62, 7) + bar(20, 70, 50, 7) + bar(26, 82, 38, 7, A) + '<path d="M18 132v-14l12-3v14" stroke="' + W + '" stroke-width="2" fill="none"/><circle cx="16" cy="133" r="3" fill="' + W + '"/><circle cx="28" cy="130" r="3" fill="' + W + '"/>'; },
+    pov: function () { return '<rect width="90" height="160" fill="#141414"/>' + person(45, 90, 1.1, '#3b3b3b') + txt(45, 42, 'POV:', 16) + bar(18, 50, 54, 5, G); },
+    split: function () { return '<rect width="45" height="160" fill="#262626"/><rect x="45" width="45" height="160" fill="#4a4a4a"/>' + person(22, 70, 0.75, '#777') + person(67, 70, 0.75, W) + '<line x1="45" y1="0" x2="45" y2="160" stroke="' + W + '" stroke-width="1.5"/>' + txt(22, 30, 'ДО', 9, '#aaa') + txt(67, 30, 'ПОСЛЕ', 9, A); },
+    list: function () { var s = '<rect width="90" height="160" fill="#161616"/>'; [1, 2, 3].forEach(function (n, i) { var y = 46 + i * 28; s += '<circle cx="22" cy="' + y + '" r="8" fill="' + (i === 0 ? A : W) + '"/>' + txt(22, y + 3.5, n, 10, '#111') + bar(36, y - 5, 38 - i * 6, 5) + bar(36, y + 3, 26, 4, G); }); return s; },
+    screen: function () { var s = '<rect width="90" height="160" fill="#111"/><rect x="14" y="16" width="62" height="110" rx="6" fill="#2a2a2a"/>'; for (var r = 0; r < 3; r++) for (var c = 0; c < 3; c++) s += '<rect x="' + (21 + c * 17) + '" y="' + (26 + r * 17) + '" width="12" height="12" rx="3" fill="' + (r === 1 && c === 1 ? A : '#555') + '"/>'; s += '<circle cx="45" cy="98" r="8" fill="none" stroke="' + W + '" stroke-width="2"/><circle cx="45" cy="98" r="3" fill="' + W + '"/>'; s += wave(140); return s; },
+    broll: function () { var s = '<rect width="90" height="160" fill="#141414"/>'; [0, 1, 2].forEach(function (i) { var y = 18 + i * 36; s += '<rect x="14" y="' + y + '" width="62" height="30" rx="3" fill="' + ['#3a3a3a', '#4b4b4b', '#2f2f2f'][i] + '"/><path d="M' + (20 + i * 8) + ' ' + (y + 26) + 'l10 -12l8 8l6 -6l10 10z" fill="#777"/>'; }); return s + wave(140); },
+    dialog: function () { return '<rect width="90" height="160" fill="#161616"/>' + person(24, 74, 0.8, '#d9d9d9') + person(66, 74, 0.8, A) + '<rect x="12" y="30" width="30" height="16" rx="6" fill="' + W + '"/><rect x="48" y="40" width="30" height="16" rx="6" fill="#555"/>'; },
+    green: function () { return '<rect width="90" height="160" fill="#1f3b26"/><rect x="10" y="14" width="70" height="74" rx="4" fill="#e9e9e9"/>' + bar(16, 22, 46, 5, '#999') + bar(16, 32, 56, 4, '#bbb') + bar(16, 40, 50, 4, '#bbb') + bar(16, 48, 54, 4, '#bbb') + '<rect x="16" y="58" width="58" height="22" rx="3" fill="#c9c9c9"/>' + person(45, 108, 0.95); },
+    timelapse: function () { return '<rect width="90" height="160" fill="#161616"/><circle cx="45" cy="66" r="24" fill="none" stroke="' + W + '" stroke-width="2.5"/><path d="M45 66V50M45 66l11 7" stroke="' + A + '" stroke-width="2.5" stroke-linecap="round"/>' + bar(14, 118, 62, 4, '#444') + bar(14, 118, 40, 4, A) + txt(45, 140, 'x10', 10, '#aaa'); },
+    comment: function () { return '<rect width="90" height="160" fill="#161616"/>' + person(45, 86, 1.15) + '<rect x="10" y="16" width="70" height="30" rx="8" fill="' + W + '"/><circle cx="20" cy="31" r="5" fill="' + A + '"/>' + bar(29, 24, 42, 4, '#555') + bar(29, 33, 32, 4, '#999'); },
+    cuts: function () { return '<rect width="90" height="160" fill="#141414"/><g transform="rotate(-8 45 80)"><rect x="16" y="36" width="58" height="84" rx="5" fill="#3a3a3a"/></g><g transform="rotate(5 45 80)"><rect x="16" y="36" width="58" height="84" rx="5" fill="#555"/></g><rect x="16" y="36" width="58" height="84" rx="5" fill="#777"/>' + person(45, 66, 0.85, W) + txt(76, 30, '⚡', 12, A); },
+    story: function () { var s = '<rect width="90" height="160" fill="#161616"/>' + person(45, 54, 1.15) + '<line x1="14" y1="130" x2="76" y2="130" stroke="#555" stroke-width="2"/>'; [14, 35, 55, 76].forEach(function (x, i) { s += '<circle cx="' + x + '" cy="130" r="4" fill="' + (i < 2 ? A : '#777') + '"/>'; }); return s + bar(20, 106, 50, 6); },
+    carousel: function () { var s = '<rect width="90" height="160" fill="#161616"/><rect x="12" y="24" width="66" height="92" rx="6" fill="#2b2b2b"/>' + txt(45, 62, '1/5', 14) + bar(22, 74, 46, 5, G) + bar(28, 84, 34, 5, G); [33, 39, 45, 51, 57].forEach(function (x, i) { s += '<circle cx="' + x + '" cy="132" r="2.4" fill="' + (i === 0 ? W : '#555') + '"/>'; }); return s; }
+  };
+  function wave(y) { var s = ''; for (var i = 0; i < 14; i++) { var h = 3 + Math.abs(Math.sin(i * 1.7)) * 9; s += '<rect x="' + (17 + i * 4.2) + '" y="' + (y - h / 2) + '" width="2.2" height="' + h + '" rx="1.1" fill="' + (i < 6 ? A : '#888') + '"/>'; } return s; }
+  function picture(id) { return '<svg viewBox="0 0 90 160" xmlns="http://www.w3.org/2000/svg">' + PICS[id]() + '</svg>'; }
 
-  // Shuffled deck so ideas don't repeat until all are shown.
-  var deck = [];
-  var lastFormat = -1;
-  var shown = 0;
-  function shuffle(a) {
-    for (var i = a.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var t = a[i]; a[i] = a[j]; a[j] = t;
+  // ---------- Build pools ----------
+  var ALL = [];
+  Object.keys(IDEAS).forEach(function (key) {
+    IDEAS[key].forEach(function (p) { ALL.push({ t: p[0], h: p[1], n: key }); });
+  });
+  function nicheOf(id) { for (var i = 0; i < NICHES.length; i++) if (NICHES[i].id === id) return NICHES[i]; return null; }
+
+  // ---------- Elements ----------
+  var $ = function (id) { return document.getElementById(id); };
+  var nichesEl = $('niches'), gen = $('gen'), genLabel = $('gen-label'), card = $('idea');
+  var elTopic = $('idea-topic'), elHook = $('idea-hook'), elFormat = $('idea-format'), elCta = $('idea-cta'),
+      elTags = $('idea-tags'), elPic = $('idea-pic'), elNiche = $('idea-niche'), elCount = $('idea-count');
+  var copyBtn = $('copy'), saveBtn = $('save'), savedEl = $('saved'), savedList = $('saved-list'), savedTitle = $('saved-title');
+  var toastEl = $('toast');
+
+  $('stat-ideas').textContent = ALL.length + ' идей в ' + (NICHES.length - 1) + ' нишах';
+
+  var current = 'all';
+  NICHES.forEach(function (n) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'niche';
+    b.setAttribute('aria-pressed', n.id === current ? 'true' : 'false');
+    b.dataset.id = n.id;
+    b.innerHTML = '<span class="emo" aria-hidden="true">' + n.emo + '</span>' + n.name;
+    nichesEl.appendChild(b);
+  });
+  nichesEl.addEventListener('click', function (e) {
+    var b = e.target.closest('.niche');
+    if (!b) return;
+    current = b.dataset.id;
+    Array.prototype.forEach.call(nichesEl.children, function (c) { c.setAttribute('aria-pressed', c === b ? 'true' : 'false'); });
+    if (!card.hidden) generate();
+  });
+
+  // ---------- Generate ----------
+  var decks = {}, lastFormat = -1, lastCta = -1, shown = 0, idea = null;
+  function shuffle(a) { for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function draw() {
+    if (!decks[current] || !decks[current].length) {
+      if (current === 'all') {
+        decks[current] = shuffle(ALL.slice());
+      } else {
+        // Niche ideas come first (popped from the end), general ones after.
+        var own = ALL.filter(function (x) { return x.n === current; });
+        var general = ALL.filter(function (x) { return x.n === 'general'; });
+        decks[current] = shuffle(general).concat(shuffle(own));
+      }
     }
-    return a;
+    return decks[current].pop();
   }
-  function nextIdea() {
-    if (!deck.length) deck = shuffle(IDEAS.map(function (_, i) { return i; }));
-    return IDEAS[deck.pop()];
-  }
-  function nextFormat() {
-    var f;
-    do { f = Math.floor(Math.random() * FORMATS.length); } while (f === lastFormat && FORMATS.length > 1);
-    lastFormat = f;
-    return FORMATS[f];
-  }
-  function restart(el, cls) {
-    el.classList.remove(cls);
-    void el.offsetWidth;
-    el.classList.add(cls);
-  }
+  function pickIdx(len, last) { var i; do { i = Math.floor(Math.random() * len); } while (i === last && len > 1); return i; }
+  function restart(el, cls) { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); }
 
-  gen.addEventListener('click', function () {
-    var idea = nextIdea();
-    elTopic.textContent = idea[0];
-    elHook.textContent = idea[1];
-    elFormat.textContent = nextFormat();
+  function generate() {
+    var base = draw();
+    lastFormat = pickIdx(FORMATS.length, lastFormat);
+    lastCta = pickIdx(CTAS.length, lastCta);
+    var nicheId = base.n === 'general' ? current : base.n;
+    var n = nicheOf(nicheId);
+    idea = {
+      t: base.t, h: base.h,
+      f: FORMATS[lastFormat][0], pic: FORMATS[lastFormat][1],
+      c: CTAS[lastCta],
+      tags: (n && n.tags) ? n.tags : GENERIC_TAGS,
+      niche: (n && n.id !== 'all') ? n.emo + ' ' + n.name : '✨ Любая ниша'
+    };
+    render();
     shown++;
     elCount.textContent = 'Идея №' + shown;
-    copyBtn.textContent = 'Скопировать';
-
-    if (card.hidden) {
-      card.hidden = false;
-      restart(card, 'enter');
-    }
+    if (card.hidden) { card.hidden = false; restart(card, 'enter'); }
     restart(card, 'flip');
     restart(gen, 'spin');
     genLabel.textContent = 'Ещё идею';
-  });
+  }
+  function render() {
+    elTopic.textContent = idea.t;
+    elHook.textContent = idea.h;
+    elFormat.textContent = idea.f;
+    elCta.textContent = idea.c;
+    elTags.textContent = idea.tags;
+    elNiche.textContent = idea.niche;
+    elPic.innerHTML = picture(idea.pic);
+    copyBtn.textContent = 'Скопировать';
+    syncSave();
+  }
+  gen.addEventListener('click', generate);
 
-  copyBtn.addEventListener('click', function () {
-    var text = 'Тема: ' + elTopic.textContent + '\nХук: ' + elHook.textContent + '\nФормат: ' + elFormat.textContent;
-    function ok() { copyBtn.textContent = 'Скопировано ✓'; }
-    if (navigator.clipboard && window.isSecureContext) {
-      navigator.clipboard.writeText(text).then(ok, fallback);
-    } else {
-      fallback();
-    }
+  // ---------- Copy ----------
+  function asText(x) {
+    return 'Тема: ' + x.t + '\nХук: ' + x.h + '\nФормат: ' + x.f + '\nПризыв: ' + x.c + '\nХэштеги: ' + x.tags;
+  }
+  function copyText(text, done) {
     function fallback() {
       var ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); ok(); } catch (e) {}
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) {}
       document.body.removeChild(ta);
     }
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(done, fallback);
+    else fallback();
+  }
+  var toastTimer;
+  function toast(msg) {
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toastEl.classList.remove('show'); }, 1800);
+  }
+  copyBtn.addEventListener('click', function () {
+    if (!idea) return;
+    copyText(asText(idea), function () { copyBtn.textContent = 'Скопировано ✓'; toast('Идея скопирована'); });
   });
+
+  // ---------- Saved ----------
+  var KEY = 'reels-ideas-saved';
+  var saved = [];
+  try { saved = JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { saved = []; }
+  function persist() { try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {} }
+  function indexOfIdea(x) { for (var i = 0; i < saved.length; i++) if (saved[i].t === x.t && saved[i].f === x.f) return i; return -1; }
+  function syncSave() {
+    var on = idea && indexOfIdea(idea) > -1;
+    saveBtn.textContent = on ? '★ Сохранено' : '☆ Сохранить';
+    saveBtn.classList.toggle('is-on', !!on);
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function renderSaved() {
+    savedEl.hidden = saved.length === 0;
+    savedTitle.textContent = 'Сохранённые идеи (' + saved.length + ')';
+    savedList.innerHTML = saved.map(function (x, i) {
+      return '<li><div><div class="saved-topic">' + esc(x.t) + '</div><div class="saved-hook">' + esc(x.h) + '</div>' +
+        '<div class="saved-meta">' + esc(x.niche) + ' · ' + esc(x.f) + '</div></div>' +
+        '<div style="display:flex;gap:6px"><button class="saved-del" type="button" data-copy="' + i + '" aria-label="Скопировать">⧉</button>' +
+        '<button class="saved-del" type="button" data-del="' + i + '" aria-label="Удалить">×</button></div></li>';
+    }).join('');
+  }
+  saveBtn.addEventListener('click', function () {
+    if (!idea) return;
+    var i = indexOfIdea(idea);
+    if (i > -1) { saved.splice(i, 1); toast('Убрано из сохранённых'); }
+    else { saved.unshift(idea); toast('Сохранено ★'); }
+    persist(); renderSaved(); syncSave();
+  });
+  savedList.addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    if (b.dataset.del != null) {
+      saved.splice(+b.dataset.del, 1);
+      persist(); renderSaved(); syncSave();
+    } else if (b.dataset.copy != null) {
+      copyText(asText(saved[+b.dataset.copy]), function () { toast('Идея скопирована'); });
+    }
+  });
+  renderSaved();
 
   // ---------- Entrance motion ----------
   var animated = Array.prototype.slice.call(document.querySelectorAll('.appear, .hero-photo'));
@@ -742,9 +1171,7 @@ button { font-family: inherit; }
     requestAnimationFrame(function () {
       var running = animated.some(function (el) {
         if (typeof el.getAnimations !== 'function') return false;
-        return el.getAnimations().some(function (a) {
-          return a.playState === 'running' || a.playState === 'finished';
-        });
+        return el.getAnimations().some(function (a) { return a.playState === 'running' || a.playState === 'finished'; });
       });
       if (!running) animated.forEach(function (el) { el.classList.add('is-in'); });
     });
